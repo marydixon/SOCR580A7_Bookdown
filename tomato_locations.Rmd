@@ -1,0 +1,55 @@
+---
+title: "Tomato Varieties"
+output:
+  html_document: default
+  word_document: default
+  pdf_document: default
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, include = F, echo = F}
+library(tidyverse) 
+library(sf)  
+library(mapview); mapviewOptions(fgb = F) #
+library(USAboundaries)
+```
+
+
+
+
+
+
+## Major US Tomato Markets
+
+```{r, echo=F}
+states <- us_states()
+ca_fl <- states %>%
+  filter(name == c('California', 'Florida')) %>%
+  st_transform(2163)
+mapview(ca_fl, zcol = 'name', legend = F)
+```
+
+
+
+## Selected Varieties
+
+```{r, echo=F}
+tomato<-read.csv('tomato_varieties.csv')
+spatial_tomato <- st_as_sf(tomato,coords=c('long','lat'),
+                          crs=4326) %>%
+  st_transform(2163)
+```
+
+
+```{r, echo=F}
+mapview(spatial_tomato, zcol = 'Type', layer.name = 'Tomato Type')
+```
+
+
+
